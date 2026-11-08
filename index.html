@@ -1,0 +1,302 @@
+<!doctype html>
+<!-- lang-attribuutti kertoo selaimelle sivun kielen. JS vaihtaa sen fi <-> en -->
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Tämä rivi tekee sivusta responsiivisen puhelimella. Ilman sitä puhelin näyttäisi sivun "pienennettynä" -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Opiskelijalounas</title>
+    <!-- Figtree-fontti Google Fontsista. preconnect avaa yhteyden etukäteen, jotta fontti latautuu nopeammin.
+       wght@400;600;800 = ladataan vain paksuudet, joita sivulla käytetään -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <!-- defer = selain lataa JS:n vasta kun HTML on valmis -->
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- ===== YLÄPALKKI ===== -->
+    <header class="site-header">
+      <div class="header-inner container">
+        <!-- data-show-view="home" = tätä painamalla palataan etusivulle -->
+        <a href="#" class="logo" data-show-view="home">Opiskelijalounas</a>
+
+        <!-- Navigaatio: puhelimella piilossa, hampurilaisnappi avaa sen -->
+        <nav id="main-nav" class="main-nav" aria-label="Päävalikko">
+          <ul class="nav-list">
+            <li>
+              <a
+                href="#restaurants"
+                data-show-view="home"
+                data-i18n="navRestaurants"
+                >Ravintolat</a
+              >
+            </li>
+            <li>
+              <button
+                type="button"
+                class="btn btn-secondary nav-btn"
+                data-show-view="login"
+                data-i18n="navLogin"
+              >
+                Kirjaudu
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                class="btn btn-primary nav-btn"
+                data-show-view="register"
+                data-i18n="navRegister"
+              >
+                Rekisteröidy
+              </button>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Napit: kieli, teema, hampurilainen -->
+        <div class="header-controls">
+          <button
+            id="lang-toggle"
+            class="icon-btn"
+            type="button"
+            data-i18n-label="langLabel"
+            aria-label="Vaihda kieli"
+          >
+            EN
+          </button>
+          <button
+            id="theme-toggle"
+            class="icon-btn"
+            type="button"
+            data-i18n-label="themeLabel"
+            aria-label="Vaihda teema"
+          >
+            🌙
+          </button>
+          <button
+            id="menu-toggle"
+            class="icon-btn menu-btn"
+            type="button"
+            data-i18n-label="menuLabel"
+            aria-label="Avaa valikko"
+            aria-expanded="false"
+            aria-controls="main-nav"
+          >
+            ☰
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===== NÄKYMÄ 1: ETUSIVU =====
+         Sivulla on kolme "näkymää" (class="view"). Kerrallaan näkyy vain yksi.
+         hidden-attribuutti piilottaa elementin. -->
+      <div id="home-view" class="view">
+        <!-- Esittely -->
+        <section class="hero">
+          <div class="container">
+            <h1 data-i18n="heroTitle">Mitä lounaaksi tänään?</h1>
+            <p data-i18n="heroText">
+              Suomen opiskelijaravintolat ja niiden ruokalistat yhdessä
+              paikassa.
+            </p>
+            <a
+              href="#restaurants"
+              class="btn btn-primary"
+              data-i18n="heroButton"
+              >Katso ravintolat</a
+            >
+          </div>
+        </section>
+
+        <!-- Ravintolat -->
+        <section id="restaurants" class="section container">
+          <h2 data-i18n="restaurantsTitle">Ravintolat</h2>
+
+          <!-- Valinta: päivän vai viikon ruokalista -->
+          <div class="view-switch" role="group" aria-label="Ruokalistan näkymä">
+            <button
+              class="btn btn-toggle active"
+              type="button"
+              data-view="day"
+              data-i18n="viewDay"
+            >
+              Päivän lista
+            </button>
+            <button
+              class="btn btn-toggle"
+              type="button"
+              data-view="week"
+              data-i18n="viewWeek"
+            >
+              Viikon lista
+            </button>
+          </div>
+
+          <!-- Tähän JS lisää myöhemmin oikeat ravintolat API:sta. Alla on vain esimerkkikortit ulkoasun testaamiseen -->
+          <div id="restaurant-list" class="card-list">
+            <article class="card">
+              <h3>Esimerkkiravintola 1</h3>
+              <p class="card-city">Espoo</p>
+              <p class="card-provider">Sodexo</p>
+              <button
+                class="btn btn-secondary"
+                type="button"
+                data-i18n="showMenu"
+              >
+                Näytä ruokalista
+              </button>
+            </article>
+            <article class="card">
+              <h3>Esimerkkiravintola 2</h3>
+              <p class="card-city">Helsinki</p>
+              <p class="card-provider">Compass Group</p>
+              <button
+                class="btn btn-secondary"
+                type="button"
+                data-i18n="showMenu"
+              >
+                Näytä ruokalista
+              </button>
+            </article>
+            <article class="card">
+              <h3>Esimerkkiravintola 3</h3>
+              <p class="card-city">Vantaa</p>
+              <p class="card-provider">Sodexo</p>
+              <button
+                class="btn btn-secondary"
+                type="button"
+                data-i18n="showMenu"
+              >
+                Näytä ruokalista
+              </button>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===== NÄKYMÄ 2: KIRJAUTUMINEN ===== -->
+      <section id="login-view" class="view section container" hidden>
+        <h2 data-i18n="loginTitle">Kirjaudu sisään</h2>
+
+        <form id="login-form" class="auth-form">
+          <!-- label for="..." yhdistää tekstin kenttään, jonka id on sama. Kenttää voi painaa myös tekstistä -->
+          <div class="form-group">
+            <label for="login-email" data-i18n="labelEmail">Sähköposti</label>
+            <input
+              type="email"
+              id="login-email"
+              name="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="login-password" data-i18n="labelPassword"
+              >Salasana</label
+            >
+            <input
+              type="password"
+              id="login-password"
+              name="password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary" data-i18n="loginButton">
+            Kirjaudu
+          </button>
+        </form>
+
+        <p class="auth-switch">
+          <span data-i18n="noAccount">Ei vielä tiliä?</span>
+          <button
+            type="button"
+            class="link-btn"
+            data-show-view="register"
+            data-i18n="navRegister"
+          >
+            Rekisteröidy
+          </button>
+        </p>
+      </section>
+
+      <!-- ===== NÄKYMÄ 3: REKISTERÖITYMINEN ===== -->
+      <section id="register-view" class="view section container" hidden>
+        <h2 data-i18n="registerTitle">Luo tili</h2>
+
+        <form id="register-form" class="auth-form">
+          <div class="form-group">
+            <label for="register-username" data-i18n="labelUsername"
+              >Käyttäjänimi</label
+            >
+            <input
+              type="text"
+              id="register-username"
+              name="username"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-email" data-i18n="labelEmail"
+              >Sähköposti</label
+            >
+            <input
+              type="email"
+              id="register-email"
+              name="email"
+              autocomplete="email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="register-password" data-i18n="labelPassword"
+              >Salasana</label
+            >
+            <input
+              type="password"
+              id="register-password"
+              name="password"
+              autocomplete="new-password"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            data-i18n="registerButton"
+          >
+            Luo tili
+          </button>
+        </form>
+
+        <p class="auth-switch">
+          <span data-i18n="haveAccount">Onko sinulla jo tili?</span>
+          <button
+            type="button"
+            class="link-btn"
+            data-show-view="login"
+            data-i18n="navLogin"
+          >
+            Kirjaudu
+          </button>
+        </p>
+      </section>
+    </main>
+
+    <!-- ===== ALAPALKKI ===== -->
+    <footer class="site-footer">
+      <div class="container">
+        <p data-i18n="footerText">Yksilötehtävä Alex Sviridenko TVT25-O</p>
+      </div>
+    </footer>
+  </body>
+</html>

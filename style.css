@@ -1,0 +1,338 @@
+/* =========================================================
+   1. VÄRIT (CSS-muuttujat)
+   Muuttuja = nimetty arvo. Vaihdetaan teema vaihtamalla arvot.
+   :root on vaalea teema. [data-theme="dark"] ylikirjoittaa värit tummassa.
+   ========================================================= */
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #1b1f27;
+  --muted: #5b6472;
+  --border: #dde1e7;
+  --accent: #b3203f;        /* puolukanpunainen */
+  --accent-hover: #8f1832;
+  --accent-text: #ffffff;   /* tekstin väri accent-värisen napin päällä */
+  --accent-soft: #fbe9ed;
+}
+
+[data-theme="dark"] {
+  --bg: #15181d;
+  --surface: #1e2229;
+  --text: #eceff3;
+  --muted: #9aa4b2;
+  --border: #2f3641;
+  --accent: #ff8da1;
+  --accent-hover: #ffa9b8;
+  --accent-text: #2a0a12;
+  --accent-soft: #3a2229;
+}
+
+/* =========================================================
+   2. PERUSASETUKSET
+   ========================================================= */
+/* border-box: padding ja border lasketaan mukaan elementin leveyteen */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Kun linkki vierittää sivua kohtaan (esim. #restaurants), jätetään tilaa
+   yläpalkille (64px), ettei se peitä kohteen yläosaa */
+html {
+  scroll-padding-top: 80px;
+}
+
+/* Varmistaa, että hidden-attribuutti piilottaa elementin aina */
+[hidden] {
+  display: none !important;
+}
+
+body {
+  margin: 0;
+  /* Figtree ladataan index.html:n <link>-riveillä Google Fontsista.
+     Jos se ei lataudu, selain käyttää seuraavaa fonttia listalta */
+  font-family: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.2s, color 0.2s; /* pehmeä siirtymä teemaa vaihtaessa */
+}
+
+h1, h2, h3 {
+  margin: 0 0 0.5rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2rem, 6vw, 3.5rem); font-weight: 800; }
+h2 { font-size: clamp(1.5rem, 4vw, 2rem); }
+h3 { font-size: 1.15rem; }
+
+p { margin: 0 0 1rem; }
+
+/* Näppäimistöllä liikkuvalle näkyvä korostus (saavutettavuus) */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Keskittää sisällön ja rajaa maksimileveyden */
+.container {
+  width: min(100% - 2rem, 1100px);
+  margin-inline: auto;
+}
+
+/* =========================================================
+   3. NAPIT
+   ========================================================= */
+.btn {
+  display: inline-block;
+  padding: 0.7rem 1.2rem;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.btn-secondary,
+.btn-toggle {
+  background: transparent;
+  color: var(--accent);
+}
+.btn-secondary:hover,
+.btn-toggle:hover { background: var(--accent-soft); }
+
+/* Valittu päivä/viikko-nappi */
+.btn-toggle.active {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* Pienet pyöreät kulmat -napit yläpalkissa (kieli, teema, hampurilainen) */
+.icon-btn {
+  min-width: 44px;   /* 44px = sormelle sopiva kosketusalue */
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.icon-btn:hover { background: var(--accent-soft); }
+
+/* =========================================================
+   4. YLÄPALKKI (mobiili ensin)
+   ========================================================= */
+.site-header {
+  position: sticky;   /* pysyy ylhäällä vieritettäessä */
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+/* FLEXBOX: asettaa logon, navin ja napit riviin */
+.header-inner {
+  display: flex;
+  align-items: center;           /* keskittää pystysuunnassa */
+  justify-content: space-between; /* logo vasemmalle, napit oikealle */
+  gap: 1rem;
+  height: 64px;
+}
+
+.logo {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.header-controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Puhelimella nav on oletuksena piilossa ja avautuu logon alle */
+.main-nav {
+  display: none;
+  position: absolute;
+  top: 100%;       /* heti yläpalkin alapuolelle */
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+/* JS lisää luokan "open", kun hampurilaista painetaan */
+.main-nav.open { display: block; }
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column; /* linkit allekkain */
+}
+
+/* Kirjaudu- ja rekisteröidy-napit: puhelimella koko leveyden napit */
+.nav-list li + li { margin-top: 0.5rem; }
+.nav-btn { width: 100%; }
+
+.nav-list a {
+  display: block;
+  padding: 0.85rem 0.5rem;
+  color: var(--text);
+  font-weight: 500;
+  text-decoration: none;
+}
+.nav-list a:hover { color: var(--accent); }
+
+/* =========================================================
+   5. SISÄLTÖ
+   ========================================================= */
+.hero {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.hero p {
+  max-width: 55ch;  /* rivi ei veny liian pitkäksi */
+  margin-bottom: 1.5rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.section { padding: 3rem 0; }
+
+.view-switch {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0 1.5rem;
+}
+
+/* FLEXBOX-kortit: flex-wrap = kortit siirtyvät uudelle riville, kun tila loppuu */
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.card {
+  flex: 1 1 280px;  /* kasvaa, kutistuu, ihanteellinen leveys 280px */
+  padding: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.card-city { margin-bottom: 0.25rem; font-weight: 600; }
+.card-provider { margin-bottom: 1rem; color: var(--muted); }
+
+/* ----- Lomakkeet (kirjautuminen ja rekisteröityminen) ----- */
+/* Otsikko ja "Ei vielä tiliä?" -teksti keskelle lomakkeen kanssa */
+#login-view,
+#register-view {
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 420px;
+  margin: 1.5rem auto 0; /* auto vasemmalla ja oikealla = keskittää lomakkeen */
+  padding: 1.5rem;
+  text-align: left;      /* kenttien tekstit pysyvät silti vasemmalla */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label { font-weight: 600; }
+
+.form-group input {
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text);
+  font: inherit;
+}
+
+.auth-switch { margin-top: 1rem; color: var(--muted); }
+
+/* Nappi, joka näyttää tekstilinkiltä */
+.link-btn {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.site-footer {
+  padding: 2rem 0;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  text-align: center;
+}
+.site-footer p { margin: 0; }
+
+/* =========================================================
+   6. MEDIA QUERY: tietokoneen leveä näyttö
+   Kun ruudun leveys on vähintään 768px, tätä koodia käytetään.
+   ========================================================= */
+@media (min-width: 768px) {
+
+  /* Hampurilainen pois, koska nav mahtuu näkyviin */
+  .menu-btn { display: none; }
+
+  .main-nav {
+    display: block;
+    position: static;   /* ei enää leijuvaa laatikkoa */
+    margin-left: auto;  /* työntää navin ja napit oikealle */
+    background: transparent;
+    border: none;
+  }
+
+  .nav-list {
+    flex-direction: row; /* linkit vierekkäin */
+    align-items: center;
+    padding: 0;
+    gap: 0.5rem;
+  }
+
+  /* Tietokoneella napit ovat tekstin levyisiä, ei koko leveyttä */
+  .nav-list li + li { margin-top: 0; }
+  .nav-btn {
+    width: auto;
+    padding: 0.5rem 1rem;
+  }
+
+  .header-inner { justify-content: flex-start; }
+}
+
+/* Jos käyttäjä on pyytänyt vähemmän animaatioita, poistetaan siirtymät */
+@media (prefers-reduced-motion: reduce) {
+  body { transition: none; }
+}
