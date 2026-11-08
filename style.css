@@ -290,6 +290,53 @@ p { margin: 0 0 1rem; }
   cursor: pointer;
 }
 
+/* ----- Tilaviesti ("Ladataan...", virheet) ----- */
+.status { color: var(--muted); }
+
+/* ----- Ruokalistaikkuna ----- */
+.menu-dialog {
+  width: min(100% - 2rem, 600px);
+  max-height: 85vh;       /* pitkä lista vierittyy ikkunan sisällä */
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+/* ::backdrop = ikkunan takana oleva tumma tausta */
+.menu-dialog::backdrop { background: rgba(0, 0, 0, 0.55); }
+
+.dialog-inner { padding: 1.25rem; }
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.dialog-header h3 { margin: 0; }
+
+.day-title {
+  margin: 1.25rem 0 0.25rem;
+  font-size: 1.05rem;
+  text-transform: capitalize; /* "maanantai" -> "Maanantai" */
+}
+
+.course-list { list-style: none; margin: 0; padding: 0; }
+
+.course {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.course-name { flex: 1 1 60%; }
+.course-price { font-weight: 600; }
+.course-diets { width: 100%; color: var(--muted); font-size: 0.9rem; }
+
 .site-footer {
   padding: 2rem 0;
   border-top: 1px solid var(--border);
