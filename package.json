@@ -1,0 +1,17 @@
+{
+  "name": "opiskelijalounas",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vanilla JS student restaurant app with Node.js and MariaDB",
+  "scripts": {
+    "start": "node --env-file=.env server.js",
+    "check": "node --check server.js && node --check script.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "mariadb": "^3.4.0",
+    "multer": "^1.4.5-lts.2"
+  },
+  "engines": {"node": ">=22"}
+}
