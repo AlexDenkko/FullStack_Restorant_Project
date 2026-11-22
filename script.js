@@ -5,6 +5,11 @@
 const DEMO = new URLSearchParams(location.search).get("demo") === "1";
 const dictionary = {
   fi: {
+    heroSideLine1: "LOUNAS",
+    heroSideLine2: "ON",
+    heroSideLine3: "TAUKO.",
+    heroSideSmall: "Hyvää ruokaa. Hyvä päivä.",
+    footerBrand: "Opiskelijalounas",
     navRestaurants: "Ravintolat",
     navFavorites: "Suosikit",
     navProfile: "Oma profiili",
@@ -91,6 +96,11 @@ const dictionary = {
     mapTitle: "Ravintolan sijainti kartalla",
   },
   en: {
+    heroSideLine1: "LUNCH",
+    heroSideLine2: "IS A",
+    heroSideLine3: "BREAK.",
+    heroSideSmall: "Good food. Good day.",
+    footerBrand: "Student Lunch",
     navRestaurants: "Restaurants",
     navFavorites: "Favorites",
     navProfile: "My profile",
