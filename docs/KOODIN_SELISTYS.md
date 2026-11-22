@@ -1,71 +1,67 @@
-# Näin selität sovelluksen opettajalle
+# Näin selität Opiskelijalounas-sovelluksen opettajalle
 
 ## 1. Yhden lauseen yhteenveto
 
-"Rakensin opiskelijaravintoloiden hakupalvelun: selain hakee ravintolat ja ruokalistat PHP:n REST-rajapinnan kautta, ja MariaDB tallentaa käyttäjät, profiilit ja suosikit. Selainpuolella on vain HTML, CSS ja tavallinen JavaScript."
+"Rakensin opiskelijaravintoloiden hakupalvelun, jossa selain näyttää ravintolat ja ruokalistat, Node.js/Express välittää API-pyynnöt ja MariaDB tallentaa käyttäjätilit, profiilit ja suosikit. Selainpuolella käytän HTML:ää, CSS:ää ja tavallista JavaScriptiä."
 
 ## 2. Mitä tiedostot tekevät?
 
-- `index.html`: määrittelee sivun sisällön ja lomakkeet. Esimerkiksi `id="restaurant-list"` on tyhjä lista, johon JavaScript lisää ravintolakortit.
-- `style.css`: määrittelee ulkoasun. `:root` sisältää vaalean teeman värit ja `[data-theme="dark"]` korvaavat ne tumman teeman väreillä. `@media`-säännöillä sivu mukautuu puhelimiin.
-- `script.js`: hakee DOM-elementtejä (`document.getElementById`), reagoi tapahtumiin (`addEventListener`), lähettää verkkopyyntöjä (`fetch`), suodattaa taulukoita (`filter`) ja piirtää tulokset DOM:iin (`createElement`, `textContent`).
-- `api/index.php`: palvelimella ajettava ohjelma. Se välittää ravintola-API-pyynnöt ja käsittelee käyttäjätietoja MariaDB:ssä.
-- `database/schema.sql`: luo kaksi taulua: `users` käyttäjille ja `favorites` käyttäjien tallentamille ravintoloille.
+- `index.html` sisältää sivut, lomakkeet ja paikat, joihin JavaScript lisää sisältöä.
+- `style.css` määrittelee värit, asettelun, teemat ja responsiiviset näkymät. Ravintolalista sekä ruokalista ja kartta voidaan vierittää erikseen.
+- `script.js` hallitsee käyttöliittymän tilaa, käsittelee painalluksia, suodattaa ravintoloita, lähettää `fetch`-pyyntöjä ja päivittää DOM:ia.
+- `server.js` on Node.js/Express-palvelin. Se käsittelee `/api`-pyynnöt, hakee ravintolatiedot ja käyttää MariaDB:tä käyttäjätoiminnoissa.
+- `database/schema.sql` määrittelee `users`- ja `favorites`-taulut.
 
-## 3. Tiedon kulku
+## 3. Tiedon kulku: Näytä lista
 
 ```text
-1. Käyttäjä painaa "Näytä lista".
-2. script.js kutsuu fetch("api/index.php?action=menu&...").
-3. PHP tekee GET-pyynnön opettajan ravintola-API:in.
-4. Ravintola-API palauttaa JSON-tiedot PHP:lle.
-5. PHP palauttaa JSON:n selaimelle.
+1. Käyttäjä painaa ravintolan "Näytä lista" -painiketta.
+2. script.js tallentaa valitun ravintolan tunnisteen.
+3. Selain kutsuu /api?action=menu&id=...&period=day&lang=fi.
+4. server.js pyytää tiedot Metropolian ravintola-API:sta.
+5. Palvelin palauttaa JSON-vastauksen selaimelle.
 6. script.js muuntaa vastauksen päiviksi ja ruokalajeiksi.
-7. DOM-käsittely näyttää listan HTML-sivulla.
+7. Ruokalista ja API:n mahdollisesti palauttamat hinnat näkyvät sivulla.
 ```
 
-Suosikeissa tiedon kulku on eri: JavaScript lähettää POST-pyynnön PHP:lle, joka tallentaa käyttäjän tunnisteen ja ravintolan tunnisteen MariaDB:n `favorites`-tauluun.
+Jos käyttäjä painaa "Näytä lista" Suosikit-sivulla, sovellus siirtyy ensin ravintolanäkymään ja näyttää valitun ravintolan ruokalistan.
 
-## 4. Tärkeitä käsitteitä yksinkertaisesti
+## 4. Tiedon kulku: suosikki
 
-- **REST API**: palvelu, jolta voi pyytää tietoja HTTP-pyyntöjen avulla.
-- **JSON**: tekstimuotoinen tiedonsiirtotapa, esim. `{ "name": "Ravintola" }`.
-- **`fetch`**: JavaScript-funktio, jolla selain lähettää HTTP-pyyntöjä.
-- **`async/await`**: tapa odottaa verkkopyynnön vastausta pysäyttämättä koko verkkosivua.
-- **DOM**: selaimen HTML-sivusta muodostama olioiden puu, jota JavaScript voi muuttaa.
-- **`filter()`**: palauttaa alkuperäisestä taulukosta ne alkiot, jotka täyttävät ehdon.
-- **`Set`**: joukko, jolla voidaan nopeasti tarkistaa, onko ravintola jo suosikeissa.
-- **`localStorage`**: selaimen tallennustila harmittomille asetuksille, esim. kieli ja teema. Salasanoja ei tallenneta sinne.
-- **PHP-istunto**: palvelimen tapa muistaa kirjautunut käyttäjä evästeen avulla.
-- **PDO**: PHP:n sisäänrakennettu tietokantarajapinta. `prepare()` erottelee SQL-lauseen ja käyttäjän tiedon.
-- **Foreign key**: viiteavain; `favorites.user_id` viittaa `users.id`-sarakkeeseen.
+Kirjautunut käyttäjä painaa sydänpainiketta. Selain lähettää POST- tai DELETE-pyynnön palvelimelle CSRF-tunnisteen kanssa. `server.js` tarkistaa istunnon ja päivittää MariaDB:n `favorites`-taulun käyttäjän tunnisteen ja ravintolatunnisteen perusteella.
 
-## 5. Kysymyksiä, joita opettaja saattaa esittää
+## 5. Tärkeitä käsitteitä
 
-**Miksi JavaScript ei ota yhteyttä suoraan MariaDB:hen?**
-Koska muuten tietokantatunnukset pitäisi lähettää selaimeen ja kuka tahansa voisi nähdä ne. PHP toimii turvallisena välikerroksena.
+- **REST API:** HTTP-pyyntöihin vastaava palvelu.
+- **JSON:** tiedon siirtomuoto selaimen ja palvelimen välillä.
+- **fetch:** selaimen JavaScriptin verkkopyyntöfunktio.
+- **async/await:** tapa käsitellä asynkronisia pyyntöjä.
+- **DOM:** HTML-sivun rakenne, jota JavaScript voi muuttaa.
+- **filter():** suodattaa taulukosta ehdon täyttävät alkiot.
+- **Set:** kokoelma, jolla tarkistetaan tehokkaasti suosikkien jäsenyys.
+- **localStorage:** tallentaa selaimessa kieli- ja teema-asetukset, ei salasanoja.
+- **Istunto:** palvelin tunnistaa kirjautuneen käyttäjän istuntoevästeen avulla.
+- **Parametrisoitu SQL:** kyselyn arvot annetaan erillisinä parametreina, esimerkiksi `WHERE id = ?`.
+- **Viiteavain:** `favorites.user_id` yhdistää suosikin käyttäjään.
 
-**Miten verkkosivusi on responsiivinen?**
-CSS:n grid- ja flex-asettelut mukautuvat. `@media(max-width:820px)` ja `@media(max-width:560px)` vaihtavat korttien määrää, asettelua ja navigaatiota pienissä näytöissä.
+## 6. Mahdollisia opettajan kysymyksiä
 
-**Miten vaihdat teeman?**
-JavaScript muuttaa HTML-elementin `data-theme`-attribuuttia. CSS:n muuttujat vaihtavat väripalettia, ja valinta säilytetään `localStorage`-muistissa.
+**Miksi JavaScript ei yhdistä suoraan MariaDB:hen?** Tietokannan tunnuksia ei saa paljastaa selaimelle. Palvelin tarkistaa oikeudet ja tekee tietokantakyselyt.
 
-**Miksi on kaksi tietokantataulua?**
-Yhdellä käyttäjällä voi olla monta suosikkia ja sama ravintola voi olla monen käyttäjän suosikki. Erillinen `favorites`-taulu sopii tähän suhteeseen ja välttää tiedon turhan toistamisen.
+**Miten salasana tallennetaan?** Palvelin käyttää satunnaista suolaa ja Node.js:n `crypto.scryptSync`-funktiota. Salasanaa ei tallenneta selkokielisenä.
 
-**Miksi salasanan arvo näyttää tietokannassa erilaiselta?**
-Tallennan hashin `password_hash()`-funktiolla ja tarkistan kirjautumisessa `password_verify()`-funktiolla, enkä tallenna salasanaa selkokielisenä.
+**Miten käyttöliittymä mukautuu mobiiliin?** CSS:n Grid-, Flexbox- ja media query -säännöt muuttavat asettelua. Ravintolalista sekä ruokalista/kartta ovat erikseen vieritettäviä myös pienillä näytöillä.
 
-**Miten sijaintitoiminto toimii?**
-Käyttäjä painaa itse lähin-painiketta. Selain pyytää luvan sijaintiin. JavaScript laskee Haversinen kaavalla etäisyydet ravintoloiden koordinaateista ja järjestää listan. Jos sijainti estetään, muut toiminnot säilyvät käytössä.
+**Miten teema ja kieli toimivat?** JavaScript vaihtaa CSS-teemaa ja käyttöliittymän tekstejä. Valinnat tallennetaan `localStorage`-muistiin.
 
-**Miten huomioit saavutettavuuden?**
-Käytän HTML:n semanttisia elementtejä, tekstikenttien `label`-nimiöitä, selviä kontrastivärejä, näppäimistön focus-tiloja, aria-attribuutteja ja `aria-live`-tilailmoituksia. Lopuksi ne on vielä varmistettava selaimessa ja validaattorilla.
+**Miksi suosikeille on oma taulu?** Yksi käyttäjä voi tallentaa monta ravintolaa, ja sama ravintola voi olla usean käyttäjän suosikki.
 
-**Mikä olisi syy siihen, ettei ruokalistaa näy?**
-Ulkoisen REST-rajapinnan palvelin voi olla pois päältä, polku voi olla väärin tai JSON-rakenne voi poiketa oletuksesta. Katson silloin ensin Developer Tools → Network ja Console sekä PHP:n virhelokit.
+**Miten lähimmät ravintolat löydetään?** Käyttäjä antaa selaimelle sijaintiluvan, ja JavaScript laskee etäisyydet koordinaateista Haversinen kaavalla. Ilman lupaa tavallinen haku toimii edelleen.
 
-## 6. Harjoitus, jolla varmistat osaamisen
+**Mitä tapahtuu, jos ravintola-API ei vastaa?** Palvelin palauttaa virheen, ja selain näyttää käyttäjälle virheilmoituksen. Ongelmaa voi tutkia selaimen Developer Toolsin Network- ja Console-välilehdillä sekä palvelimen lokista.
 
-Kokeile itse muuttaa yhtä suodattimen toimintoa, yhtä CSS-muuttujaa ja yhtä käännöstekstiä. Selitä sitten ääneen, missä järjestyksessä koodi toimii, kun käyttäjä valitsee ravintolan. Tämä auttaa osoittamaan, että ymmärrät myös muokkaamasi koodin.
+**Miten saavutettavuus on huomioitu?** Koodissa on esimerkiksi lomakkeiden labelit, näppäimistön kohdistustyylit ja ARIA-attribuutteja. Saavutettavuutta ei ole vielä dokumentoidusti auditoitu kokonaan.
+
+## 7. Osaamisen varmistus
+
+Harjoittele selittämään itse yksi tapahtumaketju: ravintolan valinta → API-pyyntö → JSON-vastaus → ruokalistan näyttäminen. Kokeile myös muuttaa yhtä CSS-muuttujaa ja yhtä käännöstekstiä ja selitä, miksi muutos näkyy sivulla.

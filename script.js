@@ -54,7 +54,7 @@ const dictionary = {
     saveProfile: "Tallenna muutokset",
     footerTagline: "Hyvää opiskelupäivää, yksi lounas kerrallaan.",
     footerMeta:
-      "Web-sovelluskehityksen yksilöprojekti · HTML · CSS · JavaScript · MariaDB",
+      "Web-sovelluskehityksen yksilöprojekti · Alex Sviridenko TVT25-O",
     showMenu: "Näytä lista",
     favorite: "Lisää suosikkeihin",
     unfavorite: "Poista suosikeista",
@@ -139,8 +139,7 @@ const dictionary = {
     saveAvatar: "Save photo",
     saveProfile: "Save changes",
     footerTagline: "Make every study day a little tastier.",
-    footerMeta:
-      "Web application assignment · HTML · CSS · JavaScript · MariaDB",
+    footerMeta: "Web application assignment · Alex Sviridenko TVT25-O",
     showMenu: "View menu",
     favorite: "Add favorite",
     unfavorite: "Remove favorite",
@@ -600,17 +599,35 @@ function renderFavorites() {
     : t("noFavorites");
   restaurants.forEach((r) => list.append(makeRestaurantCard(r, null)));
 }
+
 async function selectRestaurant(id) {
+  // Siirrytään ravintolasivulle, jos ollaan suosikeissa.
+  if (state.page !== "home") {
+    navigate("home");
+  }
+
+  // Tallennetaan valittu ravintola.
   state.selectedId = id;
+
+  // Näytetään ruokalistapaneeli.
   $("menu-empty").hidden = true;
   $("menu-content").hidden = false;
+
+  // Päivitetään ravintolan tiedot ja listat.
   showSelectedHeader();
   renderRestaurants();
   renderFavorites();
+
+  // Haetaan valitun ravintolan ruokalista.
   await loadMenu();
-  if (window.matchMedia("(max-width:820px)").matches)
-    $("menu-panel").scrollIntoView({ behavior: "smooth", block: "start" });
+
+  // Siirrytään ruokalistan kohdalle.
+  $("menu-panel").scrollIntoView({
+    behavior: "smooth",
+    block: "start",
+  });
 }
+
 function showSelectedHeader() {
   const r = state.restaurants.find((item) => item.id === state.selectedId);
   if (!r) return;

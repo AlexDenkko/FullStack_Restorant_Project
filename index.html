@@ -1,93 +1,536 @@
 <!doctype html>
 <html lang="fi">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f8f7f4">
-  <meta name="description" content="Löydä opiskelijaravintolat ja niiden päivän tai viikon ruokalistat.">
-  <title>Opiskelijalounas – löydä lounaasi</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-</head>
-<body>
-  <a class="skip-link" href="#main-content">Siirry sisältöön</a>
-  <header class="site-header">
-    <div class="container header-inner">
-      <a class="logo" href="#restaurants" data-home><span class="logo-mark" aria-hidden="true">✳</span> Opiskelijalounas</a>
-      <nav class="main-nav" id="main-nav" aria-label="Päävalikko">
-        <button type="button" class="nav-link" data-page="home" data-i18n="navRestaurants">Ravintolat</button>
-        <button type="button" class="nav-link" data-page="favorites" data-i18n="navFavorites">Suosikit</button>
-        <button type="button" class="nav-link" data-page="profile" id="profile-nav" data-i18n="navProfile" hidden>Oma profiili</button>
-        <button type="button" class="btn btn-outline" data-page="login" id="login-nav" data-i18n="navLogin">Kirjaudu</button>
-        <button type="button" class="btn btn-solid" data-page="register" id="register-nav" data-i18n="navRegister">Rekisteröidy</button>
-        <button type="button" class="btn btn-outline" id="logout-button" data-i18n="navLogout" hidden>Kirjaudu ulos</button>
-      </nav>
-      <div class="header-actions">
-        <button type="button" class="icon-btn" id="lang-toggle" aria-label="Switch to English">EN</button>
-        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Vaihda tumma teema" aria-pressed="false">◐</button>
-        <button type="button" class="icon-btn mobile-menu-button" id="menu-toggle" aria-label="Avaa valikko" aria-controls="main-nav" aria-expanded="false">☰</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f7f4" />
+    <meta
+      name="description"
+      content="Löydä opiskelijaravintolat ja niiden päivän tai viikon ruokalistat."
+    />
+    <title>Opiskelijalounas – löydä lounaasi</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Siirry sisältöön</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="#restaurants" data-home
+          ><span class="logo-mark" aria-hidden="true">✳</span>
+          Opiskelijalounas</a
+        >
+        <nav class="main-nav" id="main-nav" aria-label="Päävalikko">
+          <button
+            type="button"
+            class="nav-link"
+            data-page="home"
+            data-i18n="navRestaurants"
+          >
+            Ravintolat
+          </button>
+          <button
+            type="button"
+            class="nav-link"
+            data-page="favorites"
+            data-i18n="navFavorites"
+          >
+            Suosikit
+          </button>
+          <button
+            type="button"
+            class="nav-link"
+            data-page="profile"
+            id="profile-nav"
+            data-i18n="navProfile"
+            hidden
+          >
+            Oma profiili
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline"
+            data-page="login"
+            id="login-nav"
+            data-i18n="navLogin"
+          >
+            Kirjaudu
+          </button>
+          <button
+            type="button"
+            class="btn btn-solid"
+            data-page="register"
+            id="register-nav"
+            data-i18n="navRegister"
+          >
+            Rekisteröidy
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="logout-button"
+            data-i18n="navLogout"
+            hidden
+          >
+            Kirjaudu ulos
+          </button>
+        </nav>
+        <div class="header-actions">
+          <button
+            type="button"
+            class="icon-btn"
+            id="lang-toggle"
+            aria-label="Switch to English"
+          >
+            EN
+          </button>
+          <button
+            type="button"
+            class="icon-btn"
+            id="theme-toggle"
+            aria-label="Vaihda tumma teema"
+            aria-pressed="false"
+          >
+            ◐
+          </button>
+          <button
+            type="button"
+            class="icon-btn mobile-menu-button"
+            id="menu-toggle"
+            aria-label="Avaa valikko"
+            aria-controls="main-nav"
+            aria-expanded="false"
+          >
+            ☰
+          </button>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main id="main-content">
-    <section id="home-page" class="page">
-      <section class="hero">
-        <div class="container hero-content">
-          <div class="hero-copy">
-            <span class="eyebrow" data-i18n="eyebrow">OPISKELIJAN LOUNASOPAS</span>
-            <h1 data-i18n="heroTitle">Hyvä lounas. <span class="accent-underline">Helpommin.</span></h1>
-            <p data-i18n="heroText">Löydä opiskelijaravintolat ja tarkista päivän tai koko viikon ruokalista yhdestä paikasta.</p>
-            <a class="btn btn-solid hero-cta" href="#restaurants" data-i18n="heroButton">Tutustu ravintoloihin <span aria-hidden="true">↗</span></a>
-          </div>
-          <div class="hero-side" aria-hidden="true">
-            <div class="hero-orbit"><span>☀</span><span>✳</span><span>✦</span></div>
-            <p class="hero-side-big">LOUNAS<br>ON<br>TAUKO.</p>
-            <p class="hero-side-small">Hyvää ruokaa. Hyvä päivä.</p>
-          </div>
-        </div>
-      </section>
-
-      <section id="restaurants" class="section container" aria-labelledby="restaurants-title">
-        <div class="section-header">
-          <div><span class="eyebrow" data-i18n="exploreLabel">ETSINTÄ</span><h2 id="restaurants-title" data-i18n="restaurantsTitle">Löydä ravintola</h2></div>
-          <p id="results-count" class="results-count" aria-live="polite">Ladataan ravintoloita…</p>
-        </div>
-        <div id="demo-banner" class="notice" hidden role="status">DEMO: Käytössä on kuvitteellinen esimerkkidata. Oikea ravintola-API ja MariaDB testataan erikseen.</div>
-        <div class="filter-panel">
-          <div class="filter-grid">
-            <div class="field field-search"><label for="search-input" data-i18n="searchLabel">Hae nimellä tai osoitteella</label><input id="search-input" type="search" autocomplete="off" placeholder="Esim. kampus, kaupunki..."></div>
-            <div class="field"><label for="city-filter" data-i18n="cityLabel">Kaupunki</label><select id="city-filter"><option value="" data-i18n="allCities">Kaikki kaupungit</option></select></div>
-            <div class="field"><label for="provider-filter" data-i18n="providerLabel">Palveluntarjoaja</label><select id="provider-filter"><option value="" data-i18n="allProviders">Kaikki tarjoajat</option></select></div>
-          </div>
-          <div class="filter-footer"><button type="button" class="btn btn-subtle" id="near-me" data-i18n="nearMe">⌖ Näytä lähimmät</button><button type="button" class="text-button" id="reset-filters" data-i18n="clearFilters">Tyhjennä suodattimet</button></div>
-        </div>
-        <div class="workspace">
-          <div>
-            <div id="restaurant-status" class="state-message" aria-live="polite" role="status">Haetaan ravintolatietoja…</div>
-            <div id="restaurant-list" class="restaurant-list" aria-label="Ravintolalista"></div>
-          </div>
-          <aside class="menu-panel" id="menu-panel" aria-label="Valitun ravintolan ruokalista">
-            <div id="menu-empty" class="menu-empty"><span class="menu-empty-icon" aria-hidden="true">☷</span><h3 data-i18n="menuEmptyTitle">Mitä tänään syötäisiin?</h3><p data-i18n="menuEmptyText">Valitse ravintola, niin näet ruokalistan tässä.</p></div>
-            <div id="menu-content" hidden>
-              <div class="menu-heading"><span class="eyebrow" data-i18n="menuLabel">RUOKALISTA</span><h3 id="selected-name"></h3><p id="selected-location" class="muted"></p></div>
-              <div class="segmented" role="group" aria-label="Ruokalistan ajanjakso"><button type="button" class="segment is-active" data-period="day" aria-pressed="true" data-i18n="dayMenu">Päivä</button><button type="button" class="segment" data-period="week" aria-pressed="false" data-i18n="weekMenu">Viikko</button></div>
-              <div id="menu-status" class="state-message" role="status" aria-live="polite"></div><div id="menu-items"></div>
-              <div id="map-area" hidden class="map-area"><h4 data-i18n="locationTitle">Sijainti kartalla</h4><iframe id="restaurant-map" title="Ravintolan sijainti kartalla" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><a id="map-link" href="#" target="_blank" rel="noopener noreferrer" data-i18n="mapLink">Avaa isompi kartta ↗</a></div>
+    <main id="main-content">
+      <section id="home-page" class="page">
+        <section class="hero">
+          <div class="container hero-content">
+            <div class="hero-copy">
+              <span class="eyebrow" data-i18n="eyebrow"
+                >OPISKELIJAN LOUNASOPAS</span
+              >
+              <h1 data-i18n="heroTitle">
+                Hyvä lounas. <span class="accent-underline">Helpommin.</span>
+              </h1>
+              <p data-i18n="heroText">
+                Löydä opiskelijaravintolat ja tarkista päivän tai koko viikon
+                ruokalista yhdestä paikasta.
+              </p>
+              <a
+                class="btn btn-solid hero-cta"
+                href="#restaurants"
+                data-i18n="heroButton"
+                >Tutustu ravintoloihin <span aria-hidden="true">↗</span></a
+              >
             </div>
-          </aside>
+            <div class="hero-side" aria-hidden="true">
+              <div class="hero-orbit">
+                <span>☀</span><span>✳</span><span>✦</span>
+              </div>
+              <p class="hero-side-big">LOUNAS<br />ON<br />TAUKO.</p>
+              <p class="hero-side-small">Hyvää ruokaa. Hyvä päivä.</p>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="restaurants"
+          class="section container"
+          aria-labelledby="restaurants-title"
+        >
+          <div class="section-header">
+            <div>
+              <span class="eyebrow" data-i18n="exploreLabel">ETSINTÄ</span>
+              <h2 id="restaurants-title" data-i18n="restaurantsTitle">
+                Löydä ravintola
+              </h2>
+            </div>
+            <p id="results-count" class="results-count" aria-live="polite">
+              Ladataan ravintoloita…
+            </p>
+          </div>
+          <div id="demo-banner" class="notice" hidden role="status">
+            DEMO: Käytössä on kuvitteellinen esimerkkidata. Oikea ravintola-API
+            ja MariaDB testataan erikseen.
+          </div>
+          <div class="filter-panel">
+            <div class="filter-grid">
+              <div class="field field-search">
+                <label for="search-input" data-i18n="searchLabel"
+                  >Hae nimellä tai osoitteella</label
+                ><input
+                  id="search-input"
+                  type="search"
+                  autocomplete="off"
+                  placeholder="Esim. kampus, kaupunki..."
+                />
+              </div>
+              <div class="field">
+                <label for="city-filter" data-i18n="cityLabel">Kaupunki</label
+                ><select id="city-filter">
+                  <option value="" data-i18n="allCities">
+                    Kaikki kaupungit
+                  </option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="provider-filter" data-i18n="providerLabel"
+                  >Palveluntarjoaja</label
+                ><select id="provider-filter">
+                  <option value="" data-i18n="allProviders">
+                    Kaikki tarjoajat
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="filter-footer">
+              <button
+                type="button"
+                class="btn btn-subtle"
+                id="near-me"
+                data-i18n="nearMe"
+              >
+                ⌖ Näytä lähimmät</button
+              ><button
+                type="button"
+                class="text-button"
+                id="reset-filters"
+                data-i18n="clearFilters"
+              >
+                Tyhjennä suodattimet
+              </button>
+            </div>
+          </div>
+          <div class="workspace">
+            <div>
+              <div
+                id="restaurant-status"
+                class="state-message"
+                aria-live="polite"
+                role="status"
+              >
+                Haetaan ravintolatietoja…
+              </div>
+              <div
+                id="restaurant-list"
+                class="restaurant-list"
+                aria-label="Ravintolalista"
+              ></div>
+            </div>
+            <aside
+              class="menu-panel"
+              id="menu-panel"
+              aria-label="Valitun ravintolan ruokalista"
+            >
+              <div id="menu-empty" class="menu-empty">
+                <span class="menu-empty-icon" aria-hidden="true">☷</span>
+                <h3 data-i18n="menuEmptyTitle">Mitä tänään syötäisiin?</h3>
+                <p data-i18n="menuEmptyText">
+                  Valitse ravintola, niin näet ruokalistan tässä.
+                </p>
+              </div>
+              <div id="menu-content" hidden>
+                <div class="menu-heading">
+                  <span class="eyebrow" data-i18n="menuLabel">RUOKALISTA</span>
+                  <h3 id="selected-name"></h3>
+                  <p id="selected-location" class="muted"></p>
+                </div>
+                <div
+                  class="segmented"
+                  role="group"
+                  aria-label="Ruokalistan ajanjakso"
+                >
+                  <button
+                    type="button"
+                    class="segment is-active"
+                    data-period="day"
+                    aria-pressed="true"
+                    data-i18n="dayMenu"
+                  >
+                    Päivä</button
+                  ><button
+                    type="button"
+                    class="segment"
+                    data-period="week"
+                    aria-pressed="false"
+                    data-i18n="weekMenu"
+                  >
+                    Viikko
+                  </button>
+                </div>
+                <div
+                  id="menu-status"
+                  class="state-message"
+                  role="status"
+                  aria-live="polite"
+                ></div>
+                <div id="menu-items"></div>
+                <div id="map-area" hidden class="map-area">
+                  <h4 data-i18n="locationTitle">Sijainti kartalla</h4>
+                  <iframe
+                    id="restaurant-map"
+                    title="Ravintolan sijainti kartalla"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe
+                  ><a
+                    id="map-link"
+                    href="#"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-i18n="mapLink"
+                    >Avaa isompi kartta ↗</a
+                  >
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
+      </section>
+
+      <section
+        id="favorites-page"
+        class="page section container"
+        hidden
+        aria-labelledby="favorites-title"
+      >
+        <span class="eyebrow" data-i18n="favoritesLabel">OMAT VALINNAT</span>
+        <h1 id="favorites-title" class="subheading" data-i18n="favoritesTitle">
+          Suosikkiravintolat
+        </h1>
+        <p class="muted" data-i18n="favoritesIntro">
+          Tallentamasi ravintolat löytyvät nopeasti täältä.
+        </p>
+        <div
+          id="favorites-status"
+          class="state-message"
+          aria-live="polite"
+        ></div>
+        <div id="favorites-list" class="restaurant-list"></div>
+      </section>
+
+      <section
+        id="login-page"
+        class="page section container auth-page"
+        hidden
+        aria-labelledby="login-title"
+      >
+        <div class="auth-card">
+          <span class="eyebrow" data-i18n="welcomeBack"
+            >TERVETULOA TAKAISIN</span
+          >
+          <h1 id="login-title" data-i18n="loginTitle">Kirjaudu sisään</h1>
+          <form id="login-form">
+            <div class="field">
+              <label for="login-email" data-i18n="emailLabel">Sähköposti</label
+              ><input
+                id="login-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                maxlength="190"
+              />
+            </div>
+            <div class="field">
+              <label for="login-password" data-i18n="passwordLabel"
+                >Salasana</label
+              ><input
+                id="login-password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+            <button
+              class="btn btn-solid full-width"
+              type="submit"
+              data-i18n="loginSubmit"
+            >
+              Kirjaudu sisään
+            </button>
+            <p class="form-message" id="login-status" aria-live="polite"></p>
+          </form>
+          <p class="auth-switch">
+            <span data-i18n="noAccount">Eikö sinulla ole tiliä?</span>
+            <button
+              type="button"
+              class="text-button"
+              data-page="register"
+              data-i18n="navRegister"
+            >
+              Rekisteröidy
+            </button>
+          </p>
         </div>
       </section>
-    </section>
 
-    <section id="favorites-page" class="page section container" hidden aria-labelledby="favorites-title"><span class="eyebrow" data-i18n="favoritesLabel">OMAT VALINNAT</span><h1 id="favorites-title" class="subheading" data-i18n="favoritesTitle">Suosikkiravintolat</h1><p class="muted" data-i18n="favoritesIntro">Tallentamasi ravintolat löytyvät nopeasti täältä.</p><div id="favorites-status" class="state-message" aria-live="polite"></div><div id="favorites-list" class="restaurant-list"></div></section>
+      <section
+        id="register-page"
+        class="page section container auth-page"
+        hidden
+        aria-labelledby="register-title"
+      >
+        <div class="auth-card">
+          <span class="eyebrow" data-i18n="joinUs">LIITY MUKAAN</span>
+          <h1 id="register-title" data-i18n="registerTitle">
+            Luo käyttäjätili
+          </h1>
+          <form id="register-form">
+            <div class="field">
+              <label for="register-username" data-i18n="nameLabel"
+                >Käyttäjänimi</label
+              ><input
+                id="register-username"
+                name="username"
+                autocomplete="username"
+                required
+                minlength="2"
+                maxlength="50"
+              />
+            </div>
+            <div class="field">
+              <label for="register-email" data-i18n="emailLabel"
+                >Sähköposti</label
+              ><input
+                id="register-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                maxlength="190"
+              />
+            </div>
+            <div class="field">
+              <label for="register-password" data-i18n="passwordLabel"
+                >Salasana</label
+              ><input
+                id="register-password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                minlength="10"
+                required
+              /><small data-i18n="passwordHint"
+                >Käytä vähintään 10 merkkiä.</small
+              >
+            </div>
+            <button
+              class="btn btn-solid full-width"
+              type="submit"
+              data-i18n="registerSubmit"
+            >
+              Luo käyttäjätili
+            </button>
+            <p class="form-message" id="register-status" aria-live="polite"></p>
+          </form>
+          <p class="auth-switch">
+            <span data-i18n="haveAccount">Onko sinulla jo tili?</span>
+            <button
+              type="button"
+              class="text-button"
+              data-page="login"
+              data-i18n="navLogin"
+            >
+              Kirjaudu
+            </button>
+          </p>
+        </div>
+      </section>
 
-    <section id="login-page" class="page section container auth-page" hidden aria-labelledby="login-title"><div class="auth-card"><span class="eyebrow" data-i18n="welcomeBack">TERVETULOA TAKAISIN</span><h1 id="login-title" data-i18n="loginTitle">Kirjaudu sisään</h1><form id="login-form"><div class="field"><label for="login-email" data-i18n="emailLabel">Sähköposti</label><input id="login-email" name="email" type="email" autocomplete="email" required maxlength="190"></div><div class="field"><label for="login-password" data-i18n="passwordLabel">Salasana</label><input id="login-password" name="password" type="password" autocomplete="current-password" required></div><button class="btn btn-solid full-width" type="submit" data-i18n="loginSubmit">Kirjaudu sisään</button><p class="form-message" id="login-status" aria-live="polite"></p></form><p class="auth-switch"><span data-i18n="noAccount">Eikö sinulla ole tiliä?</span> <button type="button" class="text-button" data-page="register" data-i18n="navRegister">Rekisteröidy</button></p></div></section>
-
-    <section id="register-page" class="page section container auth-page" hidden aria-labelledby="register-title"><div class="auth-card"><span class="eyebrow" data-i18n="joinUs">LIITY MUKAAN</span><h1 id="register-title" data-i18n="registerTitle">Luo käyttäjätili</h1><form id="register-form"><div class="field"><label for="register-username" data-i18n="nameLabel">Käyttäjänimi</label><input id="register-username" name="username" autocomplete="username" required minlength="2" maxlength="50"></div><div class="field"><label for="register-email" data-i18n="emailLabel">Sähköposti</label><input id="register-email" name="email" type="email" autocomplete="email" required maxlength="190"></div><div class="field"><label for="register-password" data-i18n="passwordLabel">Salasana</label><input id="register-password" name="password" type="password" autocomplete="new-password" minlength="10" required><small data-i18n="passwordHint">Käytä vähintään 10 merkkiä.</small></div><button class="btn btn-solid full-width" type="submit" data-i18n="registerSubmit">Luo käyttäjätili</button><p class="form-message" id="register-status" aria-live="polite"></p></form><p class="auth-switch"><span data-i18n="haveAccount">Onko sinulla jo tili?</span> <button type="button" class="text-button" data-page="login" data-i18n="navLogin">Kirjaudu</button></p></div></section>
-
-    <section id="profile-page" class="page section container" hidden aria-labelledby="profile-title"><span class="eyebrow" data-i18n="myDetails">OMAT TIEDOT</span><h1 id="profile-title" class="subheading" data-i18n="profileTitle">Oma profiili</h1><div class="profile-grid"><div class="profile-photo-card"><div id="avatar-placeholder" class="avatar-placeholder" aria-hidden="true">☺</div><img id="profile-avatar" src="" alt="Oma profiilikuva" hidden><form id="avatar-form"><div class="field"><label for="avatar-file" data-i18n="avatarLabel">Vaihda profiilikuva</label><input id="avatar-file" type="file" name="avatar" accept="image/png,image/jpeg,image/webp" required><small data-i18n="avatarHint">JPG, PNG tai WebP. Enintään 2 Mt.</small></div><button class="btn btn-outline" type="submit" data-i18n="saveAvatar">Tallenna kuva</button><p id="avatar-status" class="form-message" aria-live="polite"></p></form></div><form id="profile-form" class="profile-form"><div class="field"><label for="profile-username" data-i18n="nameLabel">Käyttäjänimi</label><input id="profile-username" name="username" required minlength="2" maxlength="50"></div><div class="field"><label for="profile-email" data-i18n="emailLabel">Sähköposti</label><input id="profile-email" type="email" name="email" required maxlength="190"></div><button class="btn btn-solid" type="submit" data-i18n="saveProfile">Tallenna muutokset</button><p id="profile-status" class="form-message" aria-live="polite"></p></form></div></section>
-  </main>
-  <footer class="site-footer"><div class="container footer-inner"><p><strong>Opiskelijalounas</strong><br><span data-i18n="footerTagline">Hyvää opiskelupäivää, yksi lounas kerrallaan.</span></p><p class="footer-meta" data-i18n="footerMeta">Web-sovelluskehityksen yksilöprojekti · HTML · CSS · JavaScript · MariaDB</p></div></footer>
-</body>
+      <section
+        id="profile-page"
+        class="page section container"
+        hidden
+        aria-labelledby="profile-title"
+      >
+        <span class="eyebrow" data-i18n="myDetails">OMAT TIEDOT</span>
+        <h1 id="profile-title" class="subheading" data-i18n="profileTitle">
+          Oma profiili
+        </h1>
+        <div class="profile-grid">
+          <div class="profile-photo-card">
+            <div
+              id="avatar-placeholder"
+              class="avatar-placeholder"
+              aria-hidden="true"
+            >
+              ☺
+            </div>
+            <img id="profile-avatar" src="" alt="Oma profiilikuva" hidden />
+            <form id="avatar-form">
+              <div class="field">
+                <label for="avatar-file" data-i18n="avatarLabel"
+                  >Vaihda profiilikuva</label
+                ><input
+                  id="avatar-file"
+                  type="file"
+                  name="avatar"
+                  accept="image/png,image/jpeg,image/webp"
+                  required
+                /><small data-i18n="avatarHint"
+                  >JPG, PNG tai WebP. Enintään 2 Mt.</small
+                >
+              </div>
+              <button
+                class="btn btn-outline"
+                type="submit"
+                data-i18n="saveAvatar"
+              >
+                Tallenna kuva
+              </button>
+              <p id="avatar-status" class="form-message" aria-live="polite"></p>
+            </form>
+          </div>
+          <form id="profile-form" class="profile-form">
+            <div class="field">
+              <label for="profile-username" data-i18n="nameLabel"
+                >Käyttäjänimi</label
+              ><input
+                id="profile-username"
+                name="username"
+                required
+                minlength="2"
+                maxlength="50"
+              />
+            </div>
+            <div class="field">
+              <label for="profile-email" data-i18n="emailLabel"
+                >Sähköposti</label
+              ><input
+                id="profile-email"
+                type="email"
+                name="email"
+                required
+                maxlength="190"
+              />
+            </div>
+            <button class="btn btn-solid" type="submit" data-i18n="saveProfile">
+              Tallenna muutokset
+            </button>
+            <p id="profile-status" class="form-message" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>
+          <strong>Opiskelijalounas</strong><br /><span data-i18n="footerTagline"
+            >Hyvää opiskelupäivää, yksi lounas kerrallaan.</span
+          >
+        </p>
+        <p class="footer-meta" data-i18n="footerMeta">
+          Web-sovelluskehityksen yksilöprojekti · Alex Sviridenko TVT25-O
+        </p>
+      </div>
+    </footer>
+  </body>
 </html>

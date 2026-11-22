@@ -1,62 +1,75 @@
-# Testauslista ennen palautusta
+# Opiskelijalounas – testausraportti ja tarkistuslista
 
-Merkitse kohta valmiiksi vasta, kun olet itse testannut sen. Näin voit osoittaa opettajalle mitä testasit.
+Päivitetty: 22.11.2026. Merkinnät perustuvat käyttäjän ilmoittamiin testeihin ja projektin aikana tehtyihin käyttöliittymätarkistuksiin. Merkintä **testaamatta** ei tarkoita, että toiminto olisi rikki.
 
-## A. UI ja saavutettavuus
+## A. Toiminnalliset testit – ilmoitettu toimiviksi
 
-- [ ] Käyttöliittymä näkyy Windowsin Chromessa ja Firefoxissa.
-- [ ] Näytön leveydet 320 px, 390 px, 768 px, 1024 px ja 1440 px: ei vaakavieritystä.
-- [ ] Hampurilaisvalikko avautuu / sulkeutuu ja sen `aria-expanded` vaihtuu oikein.
-- [ ] Näppäimistön Tab-käytössä focus näkyy selvästi. Enter ja Space toimivat painikkeissa.
-- [ ] Kaikilla tekstikentillä on näkyvät labelit ja virheistä ilmoitetaan tekstinä.
-- [ ] Päivä- ja viikkopainikkeiden `aria-pressed` ilmaisee oikean valinnan.
-- [ ] Vaalea ja tumma teema toimivat; myös pienikokoinen teksti on luettavaa.
-- [ ] Suomi ja englanti vaihtuvat. Tarkista myös virhe- ja latausviestit.
-- [ ] Selaimen 200 % ja 400 % zoomauksessa tärkeät toiminnot ovat käytettävissä.
-- [ ] W3C Nu HTML Checker ja CSS Validator: korjaa ilmoitetut virheet.
-- [ ] Lighthouse Accessibility ja Performance: käy huomiot läpi, älä luota vain pistesummaan.
+- [x] Ravintolat latautuvat oikeasta rajapinnasta.
+- [x] Ravintoloiden hakutoiminto toimii.
+- [x] Päivän ruokalista avautuu.
+- [x] Viikon ruokalista avautuu.
+- [x] Hinnat näkyvät, kun API palauttaa ne.
+- [x] Rekisteröityminen toimii.
+- [x] Kirjautuminen toimii.
+- [x] Suosikkien lisääminen ja poistaminen toimii.
+- [x] Profiilin muokkaaminen toimii.
+- [x] Suomen ja englannin vaihtaminen toimii.
+- [x] Vaalea ja tumma teema toimivat.
+- [x] Suosikit-sivun "Näytä lista" siirtyy valitun ravintolan ruokalistaan (korjattu ja käyttäjän hyväksymä).
+- [x] Ruokalistan ja kartan yhteinen vieritys toimii (käyttäjän hyväksymä).
+- [x] Ravintolalistan erillinen vieritys tietokoneella ja mobiilissa toimii (käyttäjän hyväksymä).
+- [x] Footerin sijoittelu lyhyillä sivuilla on korjattu (käyttäjän hyväksymä).
 
-## B. Ravintolat ja REST API
+## B. Tekniset tarkistukset – ilmoitettu suoritetuiksi
 
-- [ ] Ilman `?demo=1` ravintolat tulevat oikeasta rajapinnasta ja niiden määrä on järkevä.
-- [ ] Yhden ravintolan päivän ruokalista näyttää oikeat ruoat ja päivämäärän.
-- [ ] Viikon ruokalista näyttää eri päivien oikeat ruoat.
-- [ ] Kaupunki-, palveluntarjoaja- ja tekstihaku toimivat myös samanaikaisesti.
-- [ ] Nollan tuloksen tilanteessa näkyy selkeä viesti.
-- [ ] Kun API ei vastaa, sovellus ei kaadu eikä näytä esimerkkiruokalistaa oikeana.
-- [ ] Jos API:ssa ei ole koordinaatteja, kartta ei näytä väärää paikkaa.
-- [ ] Sijainnin myöntämisen jälkeen lähin ravintola korostuu; sijainnin estäminen ei riko sovellusta.
-- [ ] HTTP-rajapintakutsut näkyvät DevTools → Network -välilehdessä.
+- [x] `git ls-files .env` ei tulostanut seurattua `.env`-tiedostoa.
+- [x] `.gitignore` sisältää `.env`-, `node_modules`- ja lokitiedostojen poissulut.
+- [x] `npm audit`: **found 0 vulnerabilities** tarkistushetkellä.
 
-## C. MariaDB ja käyttäjätilit
+## C. UI ja saavutettavuus – vielä varmistettava
+
+- [ ] Chrome- ja Firefox-testit Windowsissa.
+- [ ] Näytön leveydet 320, 390, 768, 1024 ja 1440 px: ei tahatonta vaakavieritystä.
+- [ ] Mobiilivalikon avautuminen/sulkeutuminen ja `aria-expanded`.
+- [ ] Näppäimistökäyttö: Tab, Enter, Space ja näkyvä kohdistus.
+- [ ] Lomakkeiden virheviestit sekä labelit.
+- [ ] Päivä/Viikko-painikkeiden `aria-pressed`.
+- [ ] Kielenvaihdon vaikutus myös virhe- ja latausviesteihin.
+- [ ] 200 % ja 400 % zoomaus.
+- [ ] HTML- ja CSS-validointi.
+- [ ] Lighthouse Accessibility ja Performance -tarkistus.
+
+## D. Rajapinta ja virhetilanteet – vielä varmistettava
+
+- [ ] Tekstihaku, kaupunki- ja palveluntarjoajasuodatin samanaikaisesti.
+- [ ] Ei hakutuloksia -tilanteen viesti.
+- [ ] API ei vastaa: sovellus näyttää virheen eikä kaadu.
+- [ ] Puuttuvat koordinaatit: kartta ei näytä väärää sijaintia.
+- [ ] Sijaintilupa sallittu/estetty: kumpikaan ei riko sovellusta.
+- [ ] API-kutsujen tarkistus selaimen Network-välilehdellä.
+
+## E. MariaDB ja käyttäjätilit – vielä varmistettava erikseen
 
 - [ ] `SHOW TABLES;` näyttää `users` ja `favorites`.
-- [ ] Rekisteröityminen lisää rivin `users`-tauluun.
-- [ ] Sama sähköpostiosoite ei saa luoda toista käyttäjää.
-- [ ] Väärällä salasanalla kirjautuminen epäonnistuu.
-- [ ] Oikealla salasanalla sisäänkirjautuminen onnistuu myös sivun päivityksen jälkeen.
-- [ ] Salasanaa ei löydy selkokielisenä MariaDB:stä eikä verkkovastauksesta.
-- [ ] Suosikin lisääminen lisää rivin `favorites`-tauluun.
-- [ ] Suosikin poisto poistaa rivin ja se pysyy poistettuna kirjautumisen jälkeen.
-- [ ] Käyttäjä ei voi muokata muiden suosikkeja tai profiilitietoja.
-- [ ] Profiilin nimen/sähköpostin muutos tallentuu.
-- [ ] Alle 2 Mt PNG/JPG/WebP -profiilikuva tallentuu ja näkyy uudelleen kirjautumisen jälkeen.
-- [ ] Muuntyyppinen ja yli 2 Mt tiedosto hylätään myös palvelimella.
-- [ ] Uloskirjautuminen mitätöi pääsyn profiiliin ja suosikkeihin.
-- [ ] `api/config.local.php` puuttuu GitHub-repositorion tiedostolistasta.
+- [ ] Rekisteröityminen lisää käyttäjän tietokantaan.
+- [ ] Sama sähköpostiosoite ei voi rekisteröityä kahdesti.
+- [ ] Väärä salasana hylätään.
+- [ ] Istunto säilyy sivun päivityksen yli.
+- [ ] Salasanaa ei tallenneta selkokielisenä eikä palauteta API-vastauksessa.
+- [ ] Suosikkien lisäys ja poisto näkyvät tietokannassa ja säilyvät kirjautumisten välillä.
+- [ ] Käyttäjä ei voi muokata toisen käyttäjän profiilia tai suosikkeja.
+- [ ] Profiilikuvan sallittu tiedostotyyppi ja koko toimivat.
+- [ ] Virheellinen tai yli 2 Mt:n profiilikuva hylätään palvelimella.
+- [ ] Uloskirjautuminen estää pääsyn kirjautumista vaativiin tietoihin.
 
-## D. Julkaisu
+## F. Julkaisu – vielä tekemättä / vahvistamatta
 
-- [ ] Julkinen osoite käyttää HTTPS:ää ja PHP + MariaDB toimivat siellä.
-- [ ] Demo-merkintää ei näy julkisella oikean datan sivulla.
-- [ ] GitHubissa on README ja looginen commit-historia.
-- [ ] Opettaja pystyy avamaan julkisen sovelluksen ilman paikallista koneesi tietokantaa.
-- [ ] Osaat itse selittää kaikki tiedostot ja pyydettäessä tarkastella Network-välilehteä.
+- [ ] Julkinen HTTPS-osoite ja Node.js/MariaDB-palvelin toimivat.
+- [ ] Tuotannon istuntovarasto on vaihdettu pysyvään ratkaisuun.
+- [ ] Kirjautumisyritysten rajoitus on vahvistettu.
+- [ ] GitHubissa on ajantasaiset dokumentit ja commit-historia.
+- [ ] Opettaja voi avata julkisen sovelluksen, jos tehtävänanto sitä edellyttää.
 
-## Kehittäjän tekemät tarkistukset tämän paketin luontivaiheessa
+## Testitulosten kirjaus jatkossa
 
-- `node --check script.js` = JavaScript-syntaksi läpäisi.
-- `php -l api/index.php` = PHP-syntaksi läpäisi.
-- `php -l api/config.example.php` = PHP-syntaksi läpäisi.
-- `GET api/index.php?action=me` = palautti JSON-muotoisen vierailijaistunnon ja CSRF-tunnisteen.
-- Oikean MariaDB:n ja ravintola-API:n integraatiot sekä selaimen visuaalitestit ovat **vielä tekemättä**, koska niitä ei voitu tehdä tässä ajoympäristössä.
+Kun suoritat uuden testin, merkitse `[x]` vain, jos olet todella varmistanut tuloksen. Kirjaa mahdollisista ongelmista testin päivämäärä, ympäristö, toistovaiheet ja havaittu virhe. Älä merkitse automaattisesti läpäistyiksi testejä, jotka on vain päätelty koodista.

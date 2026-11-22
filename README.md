@@ -1,41 +1,65 @@
-# Opiskelijalounas — Node.js + MariaDB
+# Opiskelijalounas
 
-Tämä on **kehityspohja**, ei vielä julkaistu tai oikeaa REST API:a / MariaDB:tä vasten testattu valmis työ. Selainpuolella on vain HTML, CSS ja vanilla JavaScript; Node.js-palvelimella käytetään Express-, express-session-, mariadb- ja multer-paketteja. Tarkista opettajalta backend-pakettien hyväksyttävyys.
+Opiskelijalounas on opiskelijaravintoloiden hakupalvelu. Sovelluksella voi hakea ravintoloita, tarkastella päivän ja viikon ruokalistoja sekä tallentaa suosikkiravintoloita omalle käyttäjätilille.
 
-## Käynnistys Windowsissa
+## Teknologiat
 
-1. Avaa kansio VS Codessa ja terminaali projektin juuressa.
-2. Tarkista `node -v` (Node 22 tai uudempi). Suorita `npm install`.
-3. Avaa MariaDB-komentorivi: `mariadb -u root -p` (tai `mysql -u root -p`).
-4. Suorita SQL: `SOURCE C:/POLKU/Opiskelijalounas_Node/database/schema.sql;` (vaihda polku).
-5. Luo rajattu käyttäjä MariaDB:ssä (vaihda salasana):
-   ```sql
-   CREATE USER 'lounas_app'@'127.0.0.1' IDENTIFIED BY 'OMA_VAHVA_SALASANA';
-   GRANT SELECT, INSERT, UPDATE, DELETE ON opiskelijalounas.* TO 'lounas_app'@'127.0.0.1';
-   ```
-   Jos tunnus on jo olemassa, tarkista sen salasana ja oikeudet.
-6. Kopioi `.env.example` nimellä `.env`. Aseta `DB_PASSWORD` ja `SESSION_SECRET` (vähintään 32 satunnaista merkkiä). Älä julkaise `.env`-tiedostoa.
-7. Käynnistä `npm start`. Avaa `http://localhost:8000/?demo=1` testataksesi käyttöliittymää kuvitteellisilla ravintoloilla.
-8. Avaa `http://localhost:8000/` ja kokeile oikeaa REST API:a. Rajapinnan osoite ja JSON-rakenne on **vahvistettava** opettajan materiaalista.
-9. Rekisteröidy, kirjaudu, tallenna suosikki ja kokeile profiilia. Varmista tiedot MariaDB:stä.
+- Selain: HTML, CSS ja tavallinen JavaScript (ei frontend-kehystä)
+- Palvelin: Node.js, Express
+- Tietokanta: MariaDB
+- Kirjautumisistunnot: express-session
+- Profiilikuvat: multer
+- Ravintolatiedot ja ruokalistat: Metropolian ravintola-REST-rajapinta
 
-## Rakenne
+## Ominaisuudet
 
-- `index.html` – sivun rakenne
-- `style.css` – tyylit ja responsiivisuus
-- `script.js` – selaimen vanilla JavaScript, `fetch('/api?...')`
-- `server.js` – Node.js REST-välipalvelin, kirjautuminen, profiili, suosikit
-- `database/schema.sql` – MariaDB-taulut
-- `.env.example` – palvelimen asetusten malli
-- `docs/TESTAUS.md` – alkuperäinen testauslista (PHP-viittaukset korvattava Node.js-vastineilla)
-- `docs/KOODIN_SELISTYS.md` – alkuperäinen selitys (PHP-osuus vanhentunut)
+- Ravintoloiden haku nimellä tai osoitteella sekä suodatus kaupungin ja palveluntarjoajan mukaan
+- Päivän ja viikon ruokalistat; hinnat näytetään, jos API palauttaa ne
+- Ravintolan sijainti kartalla, jos koordinaatit ovat saatavilla
+- Käyttäjätilin rekisteröinti, kirjautuminen ja uloskirjautuminen
+- Suosikkien lisääminen ja poistaminen sekä ruokalistan avaaminen suosikeista
+- Profiilin tietojen muokkaus ja profiilikuvan lähetys
+- Suomi ja englanti sekä tumma ja vaalea teema
+- Responsiivinen näkymä; ravintolalista ja ruokalista/kartta ovat erikseen vieritettäviä myös mobiilissa
+- Lyhyillä sivuilla footer pysyy ikkunan alareunassa
 
-## Tärkeät rajoitukset
+## Paikallinen käyttöönotto (Windows)
 
-- REST API:n oletuspolut `restaurants`, `menus/daily/{id}/{lang}`, `menus/weekly/{id}/{lang}` ovat **vahvistamatta**.
-- MariaDB-integraatiota ei ole vielä testattu käyttäjän koneella.
-- Express-sessionin oletusmuistivarasto on vain paikalliseen kehitykseen. Julkiseen julkaisuun tarvitaan pysyvä sessiovarasto, HTTPS, palvelinympäristön suojaus ja tarkempi kuvatiedostojen validointi.
-- Nykyinen profiilikuvan tiedostotarkistus tarkistaa tiedoston tunnisteen sisällöstä, mutta ei vielä dekoodaa kuvaa kokonaan.
-- Rekisteröitymisen salasanat ovat scrypt-hajautettuja; MariaDB:hen ei tallenneta selväkielisiä salasanoja.
-- GitHub Pages ei suorita Node.js-palvelinta. Julkaisu vaatii Node.js:ää ja MariaDB:tä tukevan palvelimen.
-- Ennen palautusta validoi HTML ja CSS, testaa näppäimistöllä ja mobiilissa sekä dokumentoi API:n todelliset vastaukset.
+1. Asenna Node.js (projektissa käytetty Node 22 tai uudempi) ja MariaDB.
+2. Avaa projektin juurikansio VS Codessa.
+3. Suorita `npm install`.
+4. Luo MariaDB:n tietokantarakenne tiedoston `database/schema.sql` avulla, esimerkiksi MariaDB-komentoriviltä komennolla `SOURCE C:/oma/polku/database/schema.sql;`.
+5. Luo tietokantakäyttäjä ja anna sille vain tarvittavat oikeudet (SELECT, INSERT, UPDATE, DELETE projektin tietokantaan). Esimerkki käyttäjätunnuksesta on `lounas_app`.
+6. Kopioi `.env.example` tiedostoksi `.env` ja täytä oma `DB_PASSWORD` sekä vähintään 32 satunnaisen merkin `SESSION_SECRET`. Älä lisää `.env`-tiedostoa GitHubiin.
+7. Käynnistä palvelin komennolla `npm start`.
+8. Avaa `http://localhost:8000/`.
+
+Testikäyttöliittymän kuvitteelliset ravintolat saa näkyviin osoitteessa `http://localhost:8000/?demo=1`. Tämä ei korvaa oikean API:n ja tietokannan testausta.
+
+## Sovelluksen toiminta
+
+Selain lähettää pyynnöt osoitteeseen `/api` esimerkiksi `?action=restaurants` ja `?action=menu&id=...&period=day&lang=fi`. `server.js` hakee ravintolatiedot ulkoisesta API:sta ja käsittelee käyttäjätoiminnot MariaDB:ssä. Tietokannan tunnukset pysyvät palvelimella.
+
+Ruokalista-API:n käytössä oleva polku on `restaurants/daily/{id}/{lang}` tai `restaurants/weekly/{id}/{lang}`. Ruokalistan hinta näytetään vain, kun se sisältyy API:n vastaukseen.
+
+## Projektin tiedostot
+
+- `index.html` – sivun rakenne ja lomakkeet
+- `style.css` – ulkoasu, teemat ja responsiivisuus
+- `script.js` – käyttöliittymän logiikka, tapahtumat ja API-pyynnöt
+- `server.js` – Express-palvelin, kirjautuminen, profiili, suosikit ja ravintola-API:n välitys
+- `database/schema.sql` – tietokantataulujen määrittely
+- `.env.example` – ympäristömuuttujien esimerkki
+- `docs/KOODIN_SELISTYS.md` – toiminnan selitys opettajalle
+- `docs/NODE_SELITYS.md` – palvelinpuolen tarkempi selitys
+- `docs/TESTAUS.md` – testitulokset ja jatkotestit
+
+## Testauksen tilanne
+
+Käyttäjä on testannut toimiviksi ravintoloiden latauksen ja haun, päivän ja viikon ruokalistat, saatavilla olevat hinnat, rekisteröinnin ja kirjautumisen, suosikit, profiilin muokkauksen, kielivalinnan ja teemat. Käyttöliittymän vieritystä, footerin sijoittelua ja suosikeista ruokalistaan siirtymistä on myös korjattu ja tarkasteltu. Katso yksityiskohdat ja avoimet testit tiedostosta `docs/TESTAUS.md`.
+
+## Tietoturva ja julkaisu
+
+Salasanat tiivistetään `scrypt`-algoritmilla; SQL-kyselyt käyttävät parametreja; muuttavat pyynnöt tarkistavat CSRF-tunnisteen. `.env` ja `node_modules` jätetään Gitin ulkopuolelle. `npm audit` palautti käyttäjän paikallisessa tarkistuksessa **0 tunnettua haavoittuvuutta** (22.11.2026).
+
+**Sovellusta ei ole dokumentoidusti julkaistu tuotantopalvelimelle.** Ennen julkaisua tarvitaan mm. pysyvä istuntovarasto (Expressin oletus-MemoryStore ei sovi tuotantoon), HTTPS, kirjautumisyritysten rajoituksen vahvistaminen ja kattavammat toiminnalliset sekä saavutettavuustestit. GitHub Pages ei yksin suorita Node.js-palvelinta tai MariaDB:tä.
